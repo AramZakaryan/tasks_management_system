@@ -1,9 +1,16 @@
 import { app } from './app'
-import { config } from 'dotenv'
+import dotenv from 'dotenv'
+import { runDb } from '../utils/db'
 
-config()
+dotenv.config()
+
 const port = process.env.PORT || 4000
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`)
-})
+const startApp = async () => {
+  await runDb()
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`)
+  })
+}
+
+void startApp()
