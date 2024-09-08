@@ -25,9 +25,10 @@
   },
   "scripts": {
     "watch": "tsc -w",
-    "nodemon": "nodemon --inspect dist/src/index.js",
-    "dev": "concurrently \"tsc -w\" \"nodemon --inspect dist/src/index.js\"",
+    "nodemon": "nodemon --inspect dist/index.js",
+    "dev": "concurrently \"tsc -w\" \"nodemon --inspect dist/index.js\"",
     "jest": "jest -i",
+    "jest:watch": "jest --watch",
     "jest:coverage": "jest -i --coverage"
   }
 }
