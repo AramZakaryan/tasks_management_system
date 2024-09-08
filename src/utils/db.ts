@@ -3,6 +3,8 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
+let db: Db
+
 export const client = new MongoClient(process.env.MONGODB_URI || 'mongodb://0.0.0.0:27017')
 
 export async function runDb() {
@@ -15,3 +17,7 @@ export async function runDb() {
     await client.close()
   }
 }
+
+export const getDB = () => db
+
+
