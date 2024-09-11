@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.taskRepository = void 0;
-const db_1 = require("../utils/db");
+const db_1 = require("./db");
 const mongodb_1 = require("mongodb");
 exports.taskRepository = {
     findAll() {
@@ -33,14 +33,6 @@ exports.taskRepository = {
         return __awaiter(this, void 0, void 0, function* () {
             const result = yield (0, db_1.getDB)().collection('tasks').insertOne(task);
             return Object.assign(Object.assign({}, task), { _id: result.insertedId });
-        });
-    },
-    update(id, updateFields) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const result = yield (0, db_1.getDB)().collection('tasks').updateOne({ _id: new mongodb_1.ObjectId(id) }, { $set: Object.assign({}, updateFields) });
-            if (result.matchedCount === 0)
-                return undefined;
-            return { status: 'updated' };
         });
     }
 };

@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateTask = exports.createTask = exports.getTaskById = exports.getAllTasks = void 0;
-const taskRepository_1 = require("../repositories/taskRepository");
+exports.createTask = exports.getTaskById = exports.getAllTasks = void 0;
+const taskRepository_1 = require("./taskRepository");
 const getAllTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const tasks = yield taskRepository_1.taskRepository.findAll();
@@ -46,21 +46,3 @@ const createTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.createTask = createTask;
-const updateTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const id = req.params.id;
-        const body = req.body;
-        const updateFields = {};
-        Object.keys(body).forEach((key) => {
-            if (body[key] !== undefined) {
-                updateFields[key] = body[key];
-            }
-        });
-        yield taskRepository_1.taskRepository.update(id, updateFields);
-        res.json({ status: 'updated' });
-    }
-    catch (error) {
-        res.status(404).json({ error: 'Error updating task status' });
-    }
-});
-exports.updateTask = updateTask;

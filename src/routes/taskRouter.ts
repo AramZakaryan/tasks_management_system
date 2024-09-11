@@ -1,11 +1,10 @@
-import { Router, Request, Response } from 'express'
-import { getAllTasks, getTaskById } from '../controllers/taskController'
+import { Router } from 'express'
+import { createTask, getAllTasks, getTaskById, updateTask } from '../controllers/taskController'
 
 export const taskRouter = Router({})
 
 taskRouter.get('/', getAllTasks)
-
+taskRouter.post('/', createTask)
 taskRouter.get('/:id', getTaskById)
-taskRouter.post('/') /////////// createTask
-taskRouter.put('/:id/status')//////////// updateTaskStatus
+taskRouter.put('/:id', updateTask)
 
