@@ -52,3 +52,12 @@ export const updateTask = async (req: Request, res: Response) => {
     res.status(404).json({ error: 'Error updating task status' })
   }
 }
+
+export const deleteTask = async (req: Request, res: Response) => {
+  try {
+    await taskRepository.delete(req.params.id);
+    res.status(200).json({ status: 'deleted' });
+  } catch (error) {
+    res.status(500).json({ error: 'Unable to delete task' });
+  }
+};

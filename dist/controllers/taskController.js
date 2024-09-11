@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateTask = exports.createTask = exports.getTaskById = exports.getAllTasks = void 0;
+exports.deleteTask = exports.updateTask = exports.createTask = exports.getTaskById = exports.getAllTasks = void 0;
 const taskRepository_1 = require("../repositories/taskRepository");
 const getAllTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -64,3 +64,13 @@ const updateTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.updateTask = updateTask;
+const deleteTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield taskRepository_1.taskRepository.delete(req.params.id);
+        res.status(200).json({ status: 'deleted' });
+    }
+    catch (error) {
+        res.status(500).json({ error: 'Unable to delete task' });
+    }
+});
+exports.deleteTask = deleteTask;

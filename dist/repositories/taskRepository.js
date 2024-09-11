@@ -32,7 +32,7 @@ exports.taskRepository = {
     create(task) {
         return __awaiter(this, void 0, void 0, function* () {
             const result = yield (0, db_1.getDB)().collection('tasks').insertOne(task);
-            return Object.assign(Object.assign({}, task), { _id: result.insertedId });
+            return { status: 'created', _id: result.insertedId };
         });
     },
     update(id, updateFields) {
@@ -41,6 +41,11 @@ exports.taskRepository = {
             if (result.matchedCount === 0)
                 return undefined;
             return { status: 'updated' };
+        });
+    },
+    delete(taskId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield (0, db_1.getDB)().collection('tasks').deleteOne({ _id: new mongodb_1.ObjectId(taskId) });
         });
     }
 };

@@ -8,3 +8,4 @@ exports.taskRouter.get('/', taskController_1.getAllTasks);
 exports.taskRouter.post('/', taskController_1.createTask);
 exports.taskRouter.get('/:id', taskController_1.getTaskById);
 exports.taskRouter.put('/:id', taskController_1.updateTask);
+exports.taskRouter.delete('/:id', taskController_1.deleteTask);

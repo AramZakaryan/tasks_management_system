@@ -16,7 +16,7 @@ export const taskRepository = {
   },
   async create(task: Task): Promise<any> {
     const result = await getDB().collection('tasks').insertOne(task)
-    return { ...task, _id: result.insertedId }
+    return { status: 'created', _id: result.insertedId }
   },
   async update(id: string, updateFields: Omit<Task, '_id' | 'createdAt'>): Promise<any> {
 
@@ -26,5 +26,9 @@ export const taskRepository = {
     )
     if (result.matchedCount === 0) return undefined
     return { status: 'updated' }
+  },
+  async delete(taskId: string) {
+    return await getDB().collection('tasks').deleteOne({ _id: new ObjectId(taskId) })
   }
+
 }
