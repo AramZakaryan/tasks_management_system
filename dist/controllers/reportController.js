@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.genReportByPeriod = void 0;
+exports.genReportByMember = exports.genReportByPeriod = void 0;
 const reportService_1 = require("../serivices/reportService");
 const genReportByPeriod = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { startDate, endDate } = req.query;
@@ -22,3 +22,15 @@ const genReportByPeriod = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.genReportByPeriod = genReportByPeriod;
+const genReportByMember = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { member } = req.params;
+    console.log(req.params);
+    try {
+        const report = yield (0, reportService_1.reportByMember)(member);
+        res.status(200).json(report);
+    }
+    catch (error) {
+        res.status(500).json({ error: 'Unable to generate report' });
+    }
+});
+exports.genReportByMember = genReportByMember;

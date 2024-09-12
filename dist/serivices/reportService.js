@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.reportByPeriod = void 0;
+exports.reportByMember = exports.reportByPeriod = void 0;
 const calculateAverageCompletionDays_1 = require("../utils/calculateAverageCompletionDays");
 const reportRepository_1 = require("../repositories/reportRepository");
 const reportByPeriod = (startDate, endDate) => __awaiter(void 0, void 0, void 0, function* () {
@@ -23,3 +23,12 @@ const reportByPeriod = (startDate, endDate) => __awaiter(void 0, void 0, void 0,
     };
 });
 exports.reportByPeriod = reportByPeriod;
+const reportByMember = (assignedMember) => __awaiter(void 0, void 0, void 0, function* () {
+    const tasks = yield reportRepository_1.reportRepository.completedTasks({ assignedMember: assignedMember });
+    return {
+        assignedMember,
+        totalTasksCompleted: tasks.length,
+        averageCompletionDays: (0, calculateAverageCompletionDays_1.calculateAverageCompletionDays)(tasks)
+    };
+});
+exports.reportByMember = reportByMember;

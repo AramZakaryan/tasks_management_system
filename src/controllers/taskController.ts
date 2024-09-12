@@ -5,14 +5,14 @@ import {
   RequestGetAllTasks,
   RequestGetTaskById,
   RequestUpdateTask
-} from '../types/request.types'
+} from '../types/taskRequest.types'
 import {
   ResponseCreateTask,
   ResponseDeleteTask,
   ResponseGetAllTasks,
   ResponseGetTaskById,
   ResponseUpdateTask
-} from '../types/response.types'
+} from '../types/taskResponse.types'
 
 
 export const getAllTasks = async (req: RequestGetAllTasks, res: ResponseGetAllTasks): Promise<void> => {

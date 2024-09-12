@@ -13,7 +13,7 @@ afterAll(async () => {
 describe('Task API', () => {
   let taskId: string
 
-  it('should create a new task', async () => {
+  it('should generate a report for a time period', async () => {
     await request(app)
       .post('/api/task')
       .send({
@@ -36,6 +36,13 @@ describe('Task API', () => {
     expect(response.body.period.endDate).toBe('2024-12-31T00:00:00.000Z')
     expect(response.body.totalTasksCompleted).toBe(1)
   })
+  it('should generate a report for a team member', async () => {
 
+    const response = await request(app).get('/api/report/member/Member 1')
+
+    expect(response.status).toBe(200)
+    expect(response.body.assignedMember).toBe('Member 1')
+    expect(response.body.totalTasksCompleted).toBe(1)
+  })
 
 })

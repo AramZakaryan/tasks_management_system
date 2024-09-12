@@ -1,7 +1,8 @@
 import { Router } from 'express'
-import { genReportByPeriod } from '../controllers/reportController'
+import { genReportByMember, genReportByPeriod } from '../controllers/reportController'
 
 export const reportRouter = Router({})
 
 reportRouter.get('/period', genReportByPeriod)
+reportRouter.get('/member/:member', genReportByMember)
 

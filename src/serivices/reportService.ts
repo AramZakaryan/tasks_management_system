@@ -15,3 +15,13 @@ export const reportByPeriod = async (startDate: Date, endDate: Date) => {
   }
 }
 
+export const reportByMember = async (assignedMember: string) => {
+  const tasks = await reportRepository.completedTasks({ assignedMember: assignedMember })
+
+  return {
+    assignedMember,
+    totalTasksCompleted: tasks.length,
+    averageCompletionDays: calculateAverageCompletionDays(tasks)
+  }
+
+}
