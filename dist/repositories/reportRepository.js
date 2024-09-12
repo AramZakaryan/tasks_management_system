@@ -9,21 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTaskById = void 0;
-const taskModel_1 = require("../models/taskModel");
-const taskModel = new taskModel_1.TaskModel();
-const getTaskById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const task = yield taskModel.findById(req.params.id);
-        if (!task) {
-            res.status(404).json({ error: 'Task not found' });
-        }
-        else {
-            res.status(200).json(task);
-        }
+exports.reportRepository = void 0;
+const db_1 = require("../db/db");
+exports.reportRepository = {
+    completedTasks(filter) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield (0, db_1.getDB)().collection('tasks').find(Object.assign({ status: 'completed' }, filter)).toArray();
+        });
     }
-    catch (error) {
-        res.status(500).json({ error: 'Error retrieving task' });
-    }
-});
-exports.getTaskById = getTaskById;
+};

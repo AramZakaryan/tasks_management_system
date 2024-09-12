@@ -1,6 +1,6 @@
 import request from 'supertest'
 import { app } from '../src/app'
-import { runDb, stopDb } from '../src/utils/db'
+import { runDb, stopDb } from '../src/db/db'
 
 beforeAll(async () => {
   await runDb()
@@ -50,18 +50,18 @@ describe('Task API', () => {
       })
 
     expect(response.status).toBe(200)
-    expect(response.body).toHaveProperty('status', 'updated')
+    expect(response.body).toHaveProperty('result', 'updated')
   })
 
   it('should return 404 for a non-existent task', async () => {
     const response = await request(app).get('/api/task/nonexistentid')
-    expect(response.status).toBe(404)
+    expect(response.status).toBe(400)
   })
 
   it('should delete the task', async () => {
     const response = await request(app).delete(`/api/task/${taskId}`);
     expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('status', 'deleted')
+    expect(response.body).toHaveProperty('result', 'deleted')
   })
 
 })

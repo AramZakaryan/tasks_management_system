@@ -38,8 +38,10 @@ const getTaskById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getTaskById = getTaskById;
 const createTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const newTask = yield taskRepository_1.taskRepository.create(req.body);
-        res.status(201).json(newTask);
+        const _id = yield taskRepository_1.taskRepository.create(req.body);
+        if (_id) {
+            res.status(201).json({ result: 'created', _id });
+        }
     }
     catch (error) {
         res.status(500).json({ error: 'Error creating task' });
@@ -56,8 +58,13 @@ const updateTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 updateFields[key] = body[key];
             }
         });
-        yield taskRepository_1.taskRepository.update(id, updateFields);
-        res.json({ status: 'updated' });
+        const result = yield taskRepository_1.taskRepository.update(id, updateFields);
+        if (result) {
+            res.status(200).json({ result: 'updated' });
+        }
+        else {
+            res.status(404).json({ error: 'Task not found' });
+        }
     }
     catch (error) {
         res.status(404).json({ error: 'Error updating task status' });
@@ -66,11 +73,16 @@ const updateTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.updateTask = updateTask;
 const deleteTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield taskRepository_1.taskRepository.delete(req.params.id);
-        res.status(200).json({ status: 'deleted' });
+        const result = yield taskRepository_1.taskRepository.delete(req.params.id);
+        if (result) {
+            res.status(200).json({ result: 'deleted' });
+        }
+        else {
+            res.status(404).json({ error: 'Task not found' });
+        }
     }
     catch (error) {
-        res.status(500).json({ error: 'Unable to delete task' });
+        res.status(500).json({ error: 'Error unable to delete task' });
     }
 });
 exports.deleteTask = deleteTask;

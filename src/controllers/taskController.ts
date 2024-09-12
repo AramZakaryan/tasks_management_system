@@ -1,8 +1,21 @@
-import { Request, Response } from 'express'
 import { taskRepository } from '../repositories/taskRepository'
+import {
+  RequestCreateTask,
+  RequestDeleteTask,
+  RequestGetAllTasks,
+  RequestGetTaskById,
+  RequestUpdateTask
+} from '../types/request.types'
+import {
+  ResponseCreateTask,
+  ResponseDeleteTask,
+  ResponseGetAllTasks,
+  ResponseGetTaskById,
+  ResponseUpdateTask
+} from '../types/response.types'
 
 
-export const getAllTasks = async (req: Request, res: Response): Promise<void> => {
+export const getAllTasks = async (req: RequestGetAllTasks, res: ResponseGetAllTasks): Promise<void> => {
   try {
     const tasks = await taskRepository.findAll()
     res.status(200).json(tasks)
@@ -11,7 +24,7 @@ export const getAllTasks = async (req: Request, res: Response): Promise<void> =>
   }
 }
 
-export const getTaskById = async (req: Request, res: Response): Promise<void> => {
+export const getTaskById = async (req: RequestGetTaskById, res: ResponseGetTaskById): Promise<void> => {
 
   try {
     const task = await taskRepository.findById(req.params.id)
@@ -25,39 +38,55 @@ export const getTaskById = async (req: Request, res: Response): Promise<void> =>
   }
 }
 
-export const createTask = async (req: Request, res: Response): Promise<void> => {
+export const createTask = async (req: RequestCreateTask, res: ResponseCreateTask): Promise<void> => {
   try {
-    const newTask = await taskRepository.create(req.body)
-    res.status(201).json(newTask)
+    const _id = await taskRepository.create(req.body)
+    if (_id) {
+      res.status(201).json({ result: 'created', _id })
+    }
   } catch (error) {
     res.status(500).json({ error: 'Error creating task' })
   }
 }
 
-export const updateTask = async (req: Request, res: Response) => {
-
-
+export const updateTask = async (req: RequestUpdateTask, res: ResponseUpdateTask): Promise<void> => {
   try {
     const id = req.params.id
     const body = req.body
+
     const updateFields: any = {}
     Object.keys(body).forEach((key) => {
-      if (body[key] !== undefined) {
-        updateFields[key] = body[key]
+      if (body[key as keyof typeof body] !== undefined) {
+        updateFields[key] = body[key as keyof typeof body]
       }
     })
-    await taskRepository.update(id, updateFields)
-    res.json({ status: 'updated' })
+
+    const result = await taskRepository.update(id, updateFields)
+    if (result) {
+      res.status(200).json({ result: 'updated' })
+    } else {
+      res.status(404).json({ error: 'Task not found' })
+    }
+
   } catch (error) {
     res.status(404).json({ error: 'Error updating task status' })
   }
 }
 
-export const deleteTask = async (req: Request, res: Response) => {
+export const deleteTask = async (req: RequestDeleteTask, res: ResponseDeleteTask): Promise<void> => {
   try {
-    await taskRepository.delete(req.params.id);
-    res.status(200).json({ status: 'deleted' });
+    const result = await taskRepository.delete(req.params.id)
+
+    if (result) {
+      res.status(200).json({ result: 'deleted' })
+    } else {
+      res.status(404).json({ error: 'Task not found' })
+    }
+
   } catch (error) {
-    res.status(500).json({ error: 'Unable to delete task' });
+    res.status(500).json({ error: 'Error unable to delete task' })
   }
-};
+}
+
+
+

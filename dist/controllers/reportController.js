@@ -8,19 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const app_1 = require("./app");
-const dotenv_1 = __importDefault(require("dotenv"));
-const db_1 = require("./db/db");
-dotenv_1.default.config();
-const port = process.env.PORT || 4000;
-const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, db_1.runDb)();
-    app_1.app.listen(port, () => {
-        console.log(`Server running on port ${port}`);
-    });
+exports.genReportByPeriod = void 0;
+const reportService_1 = require("../serivices/reportService");
+const genReportByPeriod = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { startDate, endDate } = req.query;
+    try {
+        const report = yield (0, reportService_1.reportByPeriod)(new Date(startDate), new Date(endDate));
+        res.status(200).json(report);
+    }
+    catch (error) {
+        res.status(500).json({ error: 'Unable to generate report' });
+    }
 });
-void startApp();
+exports.genReportByPeriod = genReportByPeriod;

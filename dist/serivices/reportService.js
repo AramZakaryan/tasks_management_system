@@ -8,19 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const app_1 = require("./app");
-const dotenv_1 = __importDefault(require("dotenv"));
-const db_1 = require("./db/db");
-dotenv_1.default.config();
-const port = process.env.PORT || 4000;
-const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, db_1.runDb)();
-    app_1.app.listen(port, () => {
-        console.log(`Server running on port ${port}`);
+exports.reportByPeriod = void 0;
+const calculateAverageCompletionDays_1 = require("../utils/calculateAverageCompletionDays");
+const reportRepository_1 = require("../repositories/reportRepository");
+const reportByPeriod = (startDate, endDate) => __awaiter(void 0, void 0, void 0, function* () {
+    const tasks = yield reportRepository_1.reportRepository.completedTasks({
+        completedAt: { $gte: startDate, $lte: endDate }
     });
+    return {
+        period: { startDate, endDate },
+        totalTasksCompleted: tasks.length,
+        averageCompletionDays: (0, calculateAverageCompletionDays_1.calculateAverageCompletionDays)(tasks)
+    };
 });
-void startApp();
+exports.reportByPeriod = reportByPeriod;
