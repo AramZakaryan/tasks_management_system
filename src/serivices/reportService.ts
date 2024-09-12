@@ -1,5 +1,3 @@
-import { taskRepository } from '../repositories/taskRepository'
-import { Task } from '../types/task.types'
 import { calculateAverageCompletionDays } from '../utils/calculateAverageCompletionDays'
 import { reportRepository } from '../repositories/reportRepository'
 

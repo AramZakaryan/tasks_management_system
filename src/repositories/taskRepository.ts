@@ -3,7 +3,7 @@ import { TaskFromClient } from '../types/task.types'
 import { ObjectId } from 'mongodb'
 
 export const taskRepository = {
-  async findAll(): Promise<any> {
+  async findAll(){
     return await getDB().collection('tasks').find().toArray()
   },
   async findById(id: string): Promise<any> {
